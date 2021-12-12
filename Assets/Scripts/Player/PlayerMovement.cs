@@ -17,11 +17,11 @@ public class PlayerMovement : MonoBehaviour
     private Vector2 lastDirection;
 
     private Rigidbody2D rigidBody;
-    private CircleCollider2D collider;
+    private BoxCollider2D collider;
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
-        collider = GetComponent<CircleCollider2D>();
+        collider = GetComponent<BoxCollider2D>();
         controls = new InputManager();
         controls.Player.Right.performed += a => GoRight();
         controls.Player.Left.performed += b => GoLeft();
@@ -51,6 +51,7 @@ public class PlayerMovement : MonoBehaviour
         direction = Vector2.zero;
         lastDirection = direction;
         idle = true;
+        rigidBody.freezeRotation = true;
     }
     
 
@@ -73,8 +74,8 @@ public class PlayerMovement : MonoBehaviour
             Vector2 position = new Vector2(position3D.x, position3D.y);
             Vector3 bounds3D = collider.bounds.size;
             Vector2 size = new Vector2(bounds3D.x, bounds3D.y);
-            RaycastHit2D objectAhead = Physics2D.BoxCast(position, size*0.8f, 0f, lastDirection, 1f, obstaclesLayers);
-            if (objectAhead || rigidBody.velocity.magnitude<0.1f)
+            RaycastHit2D objectAhead = Physics2D.BoxCast(position, size*0.5f, 0f, lastDirection, 0.3f, obstaclesLayers);
+            if (objectAhead /*|| rigidBody.velocity.magnitude<0.001f*/)
             {
                 Debug.Log("HIT OBSTACLE");
                 idle = true;
@@ -99,10 +100,19 @@ public class PlayerMovement : MonoBehaviour
             direction = _direction;
             if (Mathf.Abs(direction.y)>0.01f) FreezeHorizontal();
             else FreezeVertical();
-            //LockDirection();
+            
         }
     }
 
-    private void FreezeVertical()=>rigidBody.constraints = RigidbodyConstraints2D.FreezePositionY;
-    private void FreezeHorizontal() => rigidBody.constraints = RigidbodyConstraints2D.FreezePositionX;
+    private void FreezeVertical()
+    {
+        rigidBody.constraints = RigidbodyConstraints2D.FreezePositionY;
+        rigidBody.freezeRotation = true;
+    }
+
+    private void FreezeHorizontal()
+    {
+        rigidBody.constraints = RigidbodyConstraints2D.FreezePositionX;
+        rigidBody.freezeRotation = true; 
+    }
 }
