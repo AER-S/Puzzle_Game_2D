@@ -8,8 +8,10 @@ public class LevelManager : MonoBehaviour
     private bool[] banners = new bool[2];
     private bool complete;
     
-    public static event Action<BannerController> BannerRaisen = delegate(BannerController _bannerController) {  };
+    public static event Action<BannerController> BannerRisen = delegate(BannerController _bannerController) {  };
     public static event Action<BannerController> BannerLowered= delegate(BannerController _bannerController) {  };
+    
+    public static event Action<LevelManager> LevelComplete = delegate(LevelManager _level) {  };
     
     private static LevelManager instance;
     public static LevelManager Instance => instance;
@@ -26,18 +28,23 @@ public class LevelManager : MonoBehaviour
 
     private void OnEnable()
     {
-        BannerRaisen += UpdateState;
+        BannerRisen += UpdateState;
         BannerLowered += UpdateState;
+        LevelComplete += StunGame;
+        LevelTimer.TimeIsUp += FailLevel;
     }
 
     private void OnDisable()
     {
-        BannerRaisen -= UpdateState;
+        BannerRisen -= UpdateState;
         BannerLowered -= UpdateState;
+        LevelComplete -= StunGame;
+        LevelTimer.TimeIsUp -= FailLevel;
     }
 
     private void Start()
     {
+        UnStunGame();
         complete = false;
         ResetBanners();
     }
@@ -50,6 +57,21 @@ public class LevelManager : MonoBehaviour
         }
     }
 
+    void StunGame(LevelManager _level)
+    {
+        Time.timeScale = 0;
+    }
+
+    void UnStunGame()
+    {
+        Time.timeScale = 1;
+    }
+
+    void FailLevel()
+    {
+        StunGame(this);
+    }
+
     void UpdateState(BannerController _banner)
     {
         StartCoroutine(UpdateComplete());
@@ -57,7 +79,7 @@ public class LevelManager : MonoBehaviour
 
     public void RaiseBanner(BannerController _raisenBanner)
     {
-        BannerRaisen.Invoke(_raisenBanner);
+        BannerRisen.Invoke(_raisenBanner);
         banners[_raisenBanner.GetIndex()] = true;
     }
 
@@ -66,11 +88,12 @@ public class LevelManager : MonoBehaviour
         BannerLowered.Invoke(_loweredBanner);
         banners[_loweredBanner.GetIndex()] = false;
     }
+    
 
     IEnumerator UpdateComplete()
     {
         yield return new WaitForSeconds(0.05f);
-        if (banners[0] && banners[1]) complete = true;
+        if (banners[0] && banners[1]) LevelComplete.Invoke(this);
         else complete = false;
     }
     

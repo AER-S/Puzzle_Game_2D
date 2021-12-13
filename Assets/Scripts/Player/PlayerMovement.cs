@@ -11,13 +11,16 @@ public class PlayerMovement : MonoBehaviour
     
     public InputManager controls;
 
-    private bool lockDirection;
+    
     private bool idle;
     private Vector2 direction;
     private Vector2 lastDirection;
 
     private Rigidbody2D rigidBody;
     private BoxCollider2D collider;
+
+    private bool firstMove;
+    public static event Action FirstMove = delegate {  };
     private void Awake()
     {
         rigidBody = GetComponent<Rigidbody2D>();
@@ -47,7 +50,7 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         Debug.Log("Start Moving");
-        UnlockDirection();
+        firstMove = false;
         direction = Vector2.zero;
         lastDirection = direction;
         idle = true;
@@ -59,7 +62,7 @@ public class PlayerMovement : MonoBehaviour
     {
         if (idle & direction!=lastDirection)
         {
-            
+            StartMoving();
             rigidBody.velocity = direction * speed;
             lastDirection = direction;
             idle = false;
@@ -79,15 +82,19 @@ public class PlayerMovement : MonoBehaviour
             {
                 Debug.Log("HIT OBSTACLE");
                 idle = true;
-                //UnlockDirection();
+                
             }
         }
     }
 
-    
-
-    private void LockDirection() => lockDirection = true;
-    private void UnlockDirection() => lockDirection = false;
+    private void StartMoving()
+    {
+        if (!firstMove)
+        {
+            FirstMove.Invoke();
+            firstMove = true;
+        }
+    }
     private void GoDown()=>SetDirection(Vector2.down);
     private void GoUp()=>SetDirection(Vector2.up);
     private void GoLeft()=>SetDirection(Vector2.left);
