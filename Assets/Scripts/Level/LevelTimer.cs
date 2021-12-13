@@ -52,4 +52,5 @@ public class LevelTimer : MonoBehaviour
     
 
     void StartTimer() => count = true;
+    public float GetLeftTime() => timeCounter;
 }

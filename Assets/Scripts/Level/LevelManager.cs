@@ -5,6 +5,8 @@ using UnityEngine;
 
 public class LevelManager : MonoBehaviour
 {
+    [SerializeField] private int index;
+    
     private bool[] banners = new bool[2];
     private bool complete;
     private bool pause;
@@ -34,7 +36,7 @@ public class LevelManager : MonoBehaviour
         controls.Player.Pause.performed += a => TogglePause();
     }
 
-    private void TogglePause()
+    public void TogglePause()
     {
         pause = !pause;
         if(pause)PauseGame.Invoke(this);
@@ -110,7 +112,8 @@ public class LevelManager : MonoBehaviour
         BannerLowered.Invoke(_loweredBanner);
         banners[_loweredBanner.GetIndex()] = false;
     }
-    
+
+    public int GetIndex() => index;
 
     IEnumerator UpdateComplete()
     {
