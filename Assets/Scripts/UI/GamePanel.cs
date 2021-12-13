@@ -35,6 +35,6 @@ public abstract class GamePanel : MonoBehaviour
     }
 
     protected abstract void UpdatePanel();
-    public abstract void AddOtherListeners();
-    public abstract void RemoveOtherListeners();
+    protected abstract void AddOtherListeners();
+    protected abstract void RemoveOtherListeners();
 }

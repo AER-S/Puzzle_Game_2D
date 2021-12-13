@@ -17,12 +17,12 @@ public class GamePausedPanel : GamePanel
         leftTime.text = FindObjectOfType<LevelTimer>().GetLeftTime().ToString("00:00");
     }
 
-    public override void AddOtherListeners()
+    protected override void AddOtherListeners()
     {
         resumeButton.onClick.AddListener(ResumeLevel);
     }
 
-    public override void RemoveOtherListeners()
+    protected override void RemoveOtherListeners()
     {
         resumeButton.onClick.RemoveListener(ResumeLevel);
     }
