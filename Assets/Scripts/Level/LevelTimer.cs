@@ -57,6 +57,6 @@ public class LevelTimer : MonoBehaviour
     public float GetLeftTime() => timeCounter;
 
 
-    void StopTimer(LevelManager _level=null) => count = false;
+    void StopTimer() => count = false;
 
 }

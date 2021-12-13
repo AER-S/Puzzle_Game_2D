@@ -127,5 +127,5 @@ public class PlayerMovement : MonoBehaviour
         rigidBody.freezeRotation = true; 
     }
 
-    private void StopTakingInput(LevelManager _level = null) => levelIncomplete = false;
+    private void StopTakingInput() => levelIncomplete = false;
 }

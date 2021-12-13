@@ -16,9 +16,9 @@ public class LevelManager : MonoBehaviour
     public static event Action<BannerController> BannerRisen = delegate(BannerController _bannerController) {  };
     public static event Action<BannerController> BannerLowered= delegate(BannerController _bannerController) {  };
     
-    public static event Action<LevelManager> LevelComplete = delegate(LevelManager _level) {  };
+    public static event Action LevelComplete = delegate {  };
     
-    public static event Action<LevelManager> PauseGame = delegate(LevelManager _level) {  };
+    public static event Action PauseGame = delegate {  };
     public static event Action UnpauseGame = delegate {  }; 
     
     private static LevelManager instance;
@@ -39,7 +39,7 @@ public class LevelManager : MonoBehaviour
     public void TogglePause()
     {
         pause = !pause;
-        if(pause)PauseGame.Invoke(this);
+        if(pause)PauseGame.Invoke();
         else UnpauseGame.Invoke();
     }
 
@@ -81,7 +81,7 @@ public class LevelManager : MonoBehaviour
         }
     }
 
-    void StunGame(LevelManager _level)
+    void StunGame()
     {
         Time.timeScale = 0;
     }
@@ -93,7 +93,7 @@ public class LevelManager : MonoBehaviour
 
     void FailLevel()
     {
-        StunGame(this);
+        StunGame();
     }
 
     void UpdateState(BannerController _banner)
@@ -120,7 +120,7 @@ public class LevelManager : MonoBehaviour
         yield return new WaitForSeconds(0.05f);
         if (banners[0] && banners[1])
         {
-            LevelComplete.Invoke(this);
+            LevelComplete.Invoke();
             complete = true;
         }
         else complete = false;
