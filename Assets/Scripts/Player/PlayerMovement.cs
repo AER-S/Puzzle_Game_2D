@@ -13,6 +13,7 @@ public class PlayerMovement : MonoBehaviour
 
     
     private bool idle;
+    private bool levelIncomplete;
     private Vector2 direction;
     private Vector2 lastDirection;
 
@@ -35,6 +36,7 @@ public class PlayerMovement : MonoBehaviour
     private void OnEnable()
     {
         controls.Enable();
+        LevelManager.LevelComplete += StopTakingInput;
 
     }
 
@@ -45,6 +47,7 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Left.performed -= b => GoLeft();
         controls.Player.Up.performed -= c => GoUp();
         controls.Player.Down.performed -= d => GoDown();
+        LevelManager.LevelComplete -= StopTakingInput;
     }
 
     private void Start()
@@ -55,6 +58,7 @@ public class PlayerMovement : MonoBehaviour
         lastDirection = direction;
         idle = true;
         rigidBody.freezeRotation = true;
+        levelIncomplete = true;
     }
     
 
@@ -101,7 +105,7 @@ public class PlayerMovement : MonoBehaviour
     private void GoRight() => SetDirection(Vector2.right);
     private void SetDirection(Vector2 _direction)
     {
-        if (idle)
+        if (idle && levelIncomplete)
         {
             Debug.Log("New direction!");
             direction = _direction;
@@ -122,4 +126,6 @@ public class PlayerMovement : MonoBehaviour
         rigidBody.constraints = RigidbodyConstraints2D.FreezePositionX;
         rigidBody.freezeRotation = true; 
     }
+
+    private void StopTakingInput(LevelManager _level = null) => levelIncomplete = false;
 }
