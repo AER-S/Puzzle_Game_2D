@@ -16,11 +16,13 @@ public class LevelTimer : MonoBehaviour
     private void OnEnable()
     {
         PlayerMovement.FirstMove += StartTimer;
+        LevelManager.LevelComplete += StopTimer;
     }
 
     private void OnDisable()
     {
         PlayerMovement.FirstMove -= StartTimer;
+        LevelManager.LevelComplete -= StopTimer;
     }
 
     private void Start()
@@ -43,7 +45,7 @@ public class LevelTimer : MonoBehaviour
             if (!timeIsUp)
             {
                 timeIsUp = true;
-                count = false;
+                StopTimer();
                 TimeIsUp.Invoke();
             }
         }
@@ -53,4 +55,8 @@ public class LevelTimer : MonoBehaviour
 
     void StartTimer() => count = true;
     public float GetLeftTime() => timeCounter;
+
+
+    void StopTimer(LevelManager _level=null) => count = false;
+
 }

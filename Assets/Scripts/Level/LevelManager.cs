@@ -47,7 +47,7 @@ public class LevelManager : MonoBehaviour
     {
         BannerRisen += UpdateState;
         BannerLowered += UpdateState;
-        LevelComplete += StunGame;
+        //LevelComplete += StunGame;
         LevelTimer.TimeIsUp += FailLevel;
         PauseGame += StunGame;
         UnpauseGame += UnStunGame;
@@ -59,7 +59,7 @@ public class LevelManager : MonoBehaviour
         if(controls!=null) controls.Disable();
         BannerRisen -= UpdateState;
         BannerLowered -= UpdateState;
-        LevelComplete -= StunGame;
+        //LevelComplete -= StunGame;
         LevelTimer.TimeIsUp -= FailLevel;
         PauseGame -= StunGame;
         UnpauseGame -= UnStunGame;
@@ -118,7 +118,11 @@ public class LevelManager : MonoBehaviour
     IEnumerator UpdateComplete()
     {
         yield return new WaitForSeconds(0.05f);
-        if (banners[0] && banners[1]) LevelComplete.Invoke(this);
+        if (banners[0] && banners[1])
+        {
+            LevelComplete.Invoke(this);
+            complete = true;
+        }
         else complete = false;
     }
     
