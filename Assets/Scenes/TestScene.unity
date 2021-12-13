@@ -4195,6 +4195,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1515780590}
   - component: {fileID: 1515780589}
+  - component: {fileID: 1515780591}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -4229,6 +4230,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 8
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1515780591
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1515780588}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f591cee562370f74d85f5f7bd40ff1f1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  levelTime: 20
 --- !u!4 &1636489552 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2743188288784579160, guid: 25c8a382e04a1024489affaef85dfa48, type: 3}
