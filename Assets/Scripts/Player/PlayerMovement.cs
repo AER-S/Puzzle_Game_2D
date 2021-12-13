@@ -9,7 +9,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private LayerMask obstaclesLayers;
     
-    public InputManager controls;
+    private InputManager controls;
 
     
     private bool idle;

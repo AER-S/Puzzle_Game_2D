@@ -7,11 +7,17 @@ public class LevelManager : MonoBehaviour
 {
     private bool[] banners = new bool[2];
     private bool complete;
+    private bool pause;
+
+    private InputManager controls;
     
     public static event Action<BannerController> BannerRisen = delegate(BannerController _bannerController) {  };
     public static event Action<BannerController> BannerLowered= delegate(BannerController _bannerController) {  };
     
     public static event Action<LevelManager> LevelComplete = delegate(LevelManager _level) {  };
+    
+    public static event Action<LevelManager> PauseGame = delegate(LevelManager _level) {  };
+    public static event Action UnpauseGame = delegate {  }; 
     
     private static LevelManager instance;
     public static LevelManager Instance => instance;
@@ -24,6 +30,15 @@ public class LevelManager : MonoBehaviour
         }
 
         instance = this;
+        controls = new InputManager();
+        controls.Player.Pause.performed += a => TogglePause();
+    }
+
+    private void TogglePause()
+    {
+        pause = !pause;
+        if(pause)PauseGame.Invoke(this);
+        else UnpauseGame.Invoke();
     }
 
     private void OnEnable()
@@ -32,19 +47,26 @@ public class LevelManager : MonoBehaviour
         BannerLowered += UpdateState;
         LevelComplete += StunGame;
         LevelTimer.TimeIsUp += FailLevel;
+        PauseGame += StunGame;
+        UnpauseGame += UnStunGame;
+        controls.Enable();
     }
 
     private void OnDisable()
     {
+        if(controls!=null) controls.Disable();
         BannerRisen -= UpdateState;
         BannerLowered -= UpdateState;
         LevelComplete -= StunGame;
         LevelTimer.TimeIsUp -= FailLevel;
+        PauseGame -= StunGame;
+        UnpauseGame -= UnStunGame;
     }
 
     private void Start()
     {
         UnStunGame();
+        pause = false;
         complete = false;
         ResetBanners();
     }
