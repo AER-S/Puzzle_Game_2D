@@ -25,13 +25,16 @@ public class CameraController : MonoBehaviour
         Vector3 position = transform.position;
         Vector3 targetPosition = target.transform.position;
         Vector3 distance = targetPosition - position;
-        Vector3 absoluteDistance = new Vector3(Mathf.Abs(distance.x), Mathf.Abs(distance.y), 0f);
-        Vector3 newPosition = Vector3.one;
-        newPosition.z = -10f;
-        newPosition.x = targetPosition.x - Math.Sign(distance.x) * ((absoluteDistance.x > xMaxOffset) ? xMaxOffset : absoluteDistance.x);
-        newPosition.y = targetPosition.y - Math.Sign(distance.y) * ((absoluteDistance.y > yMaxOffset) ? yMaxOffset : absoluteDistance.y);
-        
-        
+        if(Mathf.Abs(distance.x)<xMaxOffset && Mathf.Abs(distance.y)<yMaxOffset) return;
+
+        Vector3 newPosition = position;
+        newPosition.x = (Mathf.Abs(distance.x) >= xMaxOffset) ? (targetPosition.x-xMaxOffset*Mathf.Sign(distance.x)) : position.x ;
+        newPosition.y = (Mathf.Abs(distance.y) >= yMaxOffset) ? (targetPosition.y-yMaxOffset*Mathf.Sign(distance.y)) : position.y ;
+
+        if (newPosition.x > xMaxPos) newPosition.x = xMaxPos;
+        if (newPosition.x < xMinPos) newPosition.x = xMinPos;
+        if (newPosition.y > yMaxPos) newPosition.y = yMaxPos;
+        if (newPosition.y < yMinPos) newPosition.y = yMinPos;
         transform.position = newPosition;
     }
 }
