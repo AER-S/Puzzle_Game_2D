@@ -490,7 +490,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7414576927281944290, guid: 718a0d77692ca004b8fca1f3025ace7b, type: 3}
       propertyPath: m_text
-      value: YOU LOST
+      value: YOU FINISHED
       objectReference: {fileID: 0}
     - target: {fileID: 8956963845261536736, guid: 718a0d77692ca004b8fca1f3025ace7b, type: 3}
       propertyPath: m_Name
